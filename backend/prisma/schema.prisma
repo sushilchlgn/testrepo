@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Course {
+  bit
+  bca
+}
+
+enum Semester {
+  first
+  second
+  third
+  fourth
+  fifth
+  sixth
+  seventh
+  eighth
+}
+
+model Book {
+  @@map("books")
+
+  id Int @id @default(autoincrement())
+  title String
+  isbn String
+  year Int
+  is_available Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  user Reservation[]
+}
+
+model User {
+  @@map("users")
+
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  course Course
+  semester Semester
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  books Reservation[]
+}
+
+model Reservation {
+  @@map("reservations")
+
+  id Int @id @default(autoincrement())
+  user_id Int
+  book_id Int
+  reservation_date DateTime
+  return_date DateTime
+  user User @relation(fields: [user_id], references: [id])
+  book Book @relation(fields: [book_id], references: [id])
+}

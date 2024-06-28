@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import AddOrUpdateBooks from "./components/addBook";
+import AddOrUpdateReservation from "./components/addReservations";
+import AddUser from "./components/addUser";
+import DisplayBook from "./components/displayBooks";
+import DisplayReservations from "./components/displayReservations";
+import DisplayUser from "./components/displayUsers";
+import ErrorPage from "./components/errorPage";
+import Sidebar from "./components/SideBar";
+import { Routes, Route, Outlet } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<AddOrUpdateBooks />} />
+        <Route path="/books" element={<DisplayBook />} />
+        <Route path="/books/add" element={<AddOrUpdateBooks />} />
+        <Route path="/books/add/:id" element={<AddOrUpdateBooks />} />
+        <Route path="/users" element={<DisplayUser />} />
+        <Route path="/users/add" element={<AddUser />} />
+        <Route path="/users/add/:id" element={<AddUser />} />
+        <Route path="/reservations" element={<DisplayReservations />} />
+        <Route path="/reservations/add" element={<AddOrUpdateReservation />} />
+        <Route path="/reservations/add/:id" element={<AddOrUpdateReservation />} />
+
+        <Route path="*" element={<ErrorPage />} />
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+function Layout() {
+  return (
+    <div className="container">
+      {/* Divide screen horizontally into 2 parts: sidebar and main content */}
+      <div style={{ width: "20%" }}>
+        <Sidebar />
+      </div>
+      <div style={{ width: "80%" }} className="content">
+        <Outlet />
+      </div>
+    </div>
+  );
+}
+
+export default App;
